@@ -1,7 +1,7 @@
 echo -e "\nStarting compilation...\n"
 
 # ENV
-CONFIG=a52q_image_dtb-gz_defconfig
+CONFIG=a52q_nethunter_defconfig
 KERNEL_DIR=$(pwd)
 PARENT_DIR="$(dirname "$KERNEL_DIR")"
 export KBUILD_BUILD_USER="atlas"
@@ -13,7 +13,7 @@ export out=$HOME/out-Samsung
 
 # Functions
 clang_build () {
-    make -j$(nproc --all) O=$out ARCH=arm64 CC="clang" AR="llvm-ar" NM="llvm-nm" LD="ld.lld" AS="llvm-as" STRIP="llvm-strip" OBJCOPY="llvm-objcopy" OBJDUMP="llvm-objdump" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=/home/atlas/toolchain/Snapdragon/prebuilt/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=/home/atlas/toolchain/Snapdragon/prebuilt/gcc/linux-x86/arm/arm-linux-android-4.9/bin/arm-linux-android-  
+    make -j$(nproc --all) O=$out ARCH=arm64 CC="clang" AR="llvm-ar" NM="llvm-nm" LD="ld.lld" AS="llvm-as" STRIP="llvm-strip" OBJCOPY="llvm-objcopy" OBJDUMP="llvm-objdump" CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=/home/atlas/toolchain/Snapdragon/prebuilt/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=/home/atlas/toolchain/Snapdragon/prebuilt/gcc/linux-x86/arm/arm-linux-android-4.9/bin/arm-linux-android- DTC_EXT=/home/atlas/sources/dtc-aosp  
 }
 
 # Build kernel
