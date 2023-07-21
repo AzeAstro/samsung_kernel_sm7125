@@ -1,7 +1,7 @@
 /*
  * RTL8XXXU mac80211 USB driver - 8723b specific subdriver
  *
- * Copyright (c) 2014 - 2017 Jes Sorensen <Jes.Sorensen@gmail.com>
+ * Copyright (c) 2020 Christian <kimocoder> B. <christian@aircrack-ng.org>
  *
  * Portions, notably calibration code:
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
@@ -1673,7 +1673,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
 	.has_s0s1 = 1,
 	.has_tx_report = 1,
 	.gen2_thermal_meter = 1,
-	.needs_full_init = 1,
+	.has_darfrc = 1,
 	.adda_1t_init = 0x01c00014,
 	.adda_1t_path_on = 0x01c00014,
 	.adda_2t_path_on_a = 0x01c00014,
