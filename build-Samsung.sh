@@ -1,7 +1,7 @@
 echo -e "\nStarting compilation...\n"
 
 # ENV
-CONFIG=vendor/a52q_eur_open_defconfig
+CONFIG=vendor/a52q_nethunter_defconfig
 KERNEL_DIR=$(pwd)
 PARENT_DIR="$(dirname "$KERNEL_DIR")"
 export KBUILD_BUILD_USER="atlas"
