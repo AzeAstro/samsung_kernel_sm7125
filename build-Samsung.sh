@@ -20,20 +20,21 @@ clang_build () {
 make O=$out ARCH=arm64 $CONFIG
 echo -e "${bold}Compiling with CLANG${normal}\n$KBUILD_COMPILER_STRING"
 clang_build
-#if [ -f "$out/arch/arm64/boot/Image.gz-dtb" ] && [ -f "$out/arch/arm64/boot/dtbo.img" ]; then
-# echo -e "\nKernel compiled succesfully! Zipping up...\n"
-# ZIPNAME="StockSamsung-$(date '+%Y%m%d-%H%M').zip"
-# if [ ! -d AnyKernel3 ]; then
-#  git clone -q https://github.com/AzeAstro/AnyKernel3.git -b samsung
-# fi;
-# cp -f $out/arch/arm64/boot/Image.gz-dtb AnyKernel3
-# cp -f $out/arch/arm64/boot/dtbo.img AnyKernel3
-# cd AnyKernel3
-# zip -r9 "$HOME/$ZIPNAME" *
-# cd ..
-# rm -rf AnyKernel3
-# echo -e "\nCompleted in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
-# echo -e "Zip: $ZIPNAME\n"
-#else
-# echo -e "\nCompilation failed!\n"
-#fi;
+if [ -f "$out/arch/arm64/boot/Image.gz-dtb" ] && [ -f "$out/drivers/net/wireless/realtek/rtl8188eus/8188eu.ko" ] && [ -f "$out/drivers/net/wireless/realtek/rtl8812au/88XXau.ko" ]; then
+echo -e "\nKernel compiled succesfully! Zipping up...\n"
+ZIPNAME="NethutnerKernel-A525FXXS5DWD2-$(date '+%Y%m%d-%H%M').zip"
+if [ ! -d AnyKernel3 ]; then
+   git clone -q https://github.com/AzeAstro/AnyKernel3.git -b samsung
+fi;
+cp -f $out/arch/arm64/boot/Image.gz-dtb AnyKernel3
+cd AnyKernel3
+zip -r9 "$HOME/$ZIPNAME" *
+cd ..
+echo -e "Signing modules"
+$out/scripts/sign-file sha512 $out/certs/signing_key.pem $out/certs/signing_key.x509 $out/drivers/net/wireless/realtek/rtl8188eus/*.ko
+$out/scripts/sign-file sha512 $out/certs/signing_key.pem $out/certs/signing_key.x509 $out/drivers/net/wireless/realtek/rtl8812au/*.ko
+echo -e "\nCompleted in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
+echo -e "Zip: $ZIPNAME\n"
+else
+ echo -e "\nCompilation failed!\n"
+fi;
