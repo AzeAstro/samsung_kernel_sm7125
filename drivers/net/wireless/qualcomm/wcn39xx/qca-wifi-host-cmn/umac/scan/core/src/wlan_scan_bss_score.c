@@ -884,7 +884,7 @@ int scm_calculate_bss_score(struct wlan_objmgr_psoc *psoc,
 		       prorated_pcnt, rssi_score, pcl_score, ht_score,
 		       vht_score, he_score, beamformee_score, bandwidth_score,
 		       band_score, congestion_score, nss_score, oce_wan_score,
-		       sae_pk_score, score);
+		       score);
 
 	entry->bss_score = score;
 	return score;
