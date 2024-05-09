@@ -3,8 +3,8 @@
 export ARCH=arm64
 mkdir out
 
-BUILD_CROSS_COMPILE=/home/atlas/kernel/AOSP13/toolchain/gcc/bin/aarch64-linux-android-
-KERNEL_LLVM_BIN=/home/atlas/kernel/AOSP13/toolchain/clang/bin/clang
+BUILD_CROSS_COMPILE=/home/atlas_co/kernel/AOSP13/toolchain/gcc/bin/aarch64-linux-android-
+KERNEL_LLVM_BIN=/home/atlas_co/kernel/AOSP13/toolchain/clang/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
 KERNEL_MAKE_ENV="DTC_EXT=/home/atlas/kernel/AOSP13/toolchain/dtc CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
