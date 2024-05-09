@@ -21,6 +21,7 @@ void net_log(const char *fmt, ...)
 	}
 	va_end(arg_list);
 }
+EXPORT_SYMBOL_GPL(net_log);
 
 static int __init net_ipc_log_init(void)
 {
