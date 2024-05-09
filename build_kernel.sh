@@ -18,6 +18,6 @@ files=$(find "$out" -type f -name "*.ko")
 
 # Loop through each file found
 for file in $files; do
-    echo "Found module: $file\nSigning with key"
+    echo "Found module: $file. Signing with key"
     $out/scripts/sign-file sha512 $out/certs/signing_key.pem $out/certs/signing_key.x509 $file
 done
