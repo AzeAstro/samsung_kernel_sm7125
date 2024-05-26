@@ -378,7 +378,7 @@ static int zram_pin_backing_file(struct zram *zram)
 	}
 	unsigned long dummyVar;
 	dummyVar=copy_to_user(buf, &set, sizeof(int));
-	ret = file->f_op->unlocked_ioctl(file, cmd, (unsigned long)buf);
+	ret = file->f_op->unlocked_ioctl(file, cmd, (long unsigned int)buf);
 	pr_info("%s ioctl to pin file returned %d\n", __func__, ret);
 
 	return ret;
