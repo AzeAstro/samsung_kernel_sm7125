@@ -6141,7 +6141,7 @@ int afe_tas_smartamp_get_calib_data(uint32_t module_id, uint32_t param_id,
 	} else if (module_id == this_afe.tas_module_rx) {
 		port = port_id + 1;
 	} else {
-		pr_err("[TI-SmartPA:%s] invalid module id %d\n", module_id);
+		pr_err("[TI-SmartPA:%s] invalid module id %d\n",__func__ ,module_id);
 		goto fail_cmd;
 	}
 	memset(&param_hdr, 0, sizeof(param_hdr));
