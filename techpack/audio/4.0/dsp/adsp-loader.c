@@ -355,7 +355,7 @@ static int adsp_loader_probe(struct platform_device *pdev)
 	}
 	if (len <= 0 || len > sizeof(u32)) {
 		dev_dbg(&pdev->dev, "%s: nvmem cell length out of range: %d\n",
-			__func__, len);
+			__func__, (int)len);
 		kfree(buf);
 		goto wqueue;
 	}
