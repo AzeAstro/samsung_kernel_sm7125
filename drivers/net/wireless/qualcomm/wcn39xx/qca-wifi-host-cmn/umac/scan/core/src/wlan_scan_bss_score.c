@@ -883,8 +883,7 @@ int scm_calculate_bss_score(struct wlan_objmgr_psoc *psoc,
 	scm_nofl_debug("Scores: prorated_pcnt %d rssi %d pcl %d ht %d vht %d he %d bfee %d bw %d band %d congestion %d nss %d oce wan %d TOTAL %d",
 		       prorated_pcnt, rssi_score, pcl_score, ht_score,
 		       vht_score, he_score, beamformee_score, bandwidth_score,
-		       band_score, congestion_score, nss_score, oce_wan_score,
-		       sae_pk_score, score);
+		       band_score, congestion_score, nss_score, oce_wan_score, score);
 
 	entry->bss_score = score;
 	return score;
