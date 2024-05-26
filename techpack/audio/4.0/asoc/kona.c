@@ -8092,6 +8092,9 @@ aux_dev_register:
 			ret = -ENOMEM;
 			goto err;
 		}
+		wsa881x_dev_info = devm_kcalloc(&pdev->dev, wsa_max_devs,
+					sizeof(struct msm_wsa881x_dev_info),
+					GFP_KERNEL);
 
 		ret = of_property_read_string_index(pdev->dev.of_node,
 						    "qcom,wsa-aux-dev-prefix",
