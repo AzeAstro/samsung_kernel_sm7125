@@ -475,6 +475,7 @@ struct motion_output_report_02 {
 #define DS4_FEATURE_REPORT_0x81_SIZE 7
 #define DS4_INPUT_REPORT_0x11_SIZE 78
 #define DS4_OUTPUT_REPORT_0x05_SIZE 32
+#define DS4_FEATURE_REPORT_0x12_SIZE 16
 #define DS4_OUTPUT_REPORT_0x11_SIZE 78
 #define SIXAXIS_REPORT_0xF2_SIZE 17
 #define SIXAXIS_REPORT_0xF5_SIZE 8
@@ -2378,6 +2379,55 @@ static int sony_get_bt_devaddr(struct sony_sc *sc)
 	return 0;
 }
 
+
+static int sony_get_usb_ds4_devaddr(struct sony_sc *sc)
+{
+	u8 *buf = NULL;
+	int ret;
+
+	buf = kmalloc(max(DS4_FEATURE_REPORT_0x12_SIZE, DS4_FEATURE_REPORT_0x81_SIZE), GFP_KERNEL);
+	if (!buf)
+		return -ENOMEM;
+
+	/*
+	 * The MAC address of a DS4 controller connected via USB can be
+	 * retrieved with feature report 0x81. The address begins at
+	 * offset 1.
+	 */
+	ret = hid_hw_raw_request(sc->hdev, 0x81, buf,
+			DS4_FEATURE_REPORT_0x81_SIZE, HID_FEATURE_REPORT,
+			HID_REQ_GET_REPORT);
+	if (ret == DS4_FEATURE_REPORT_0x81_SIZE) {
+		memcpy(sc->mac_address, &buf[1], sizeof(sc->mac_address));
+		goto out_free;
+	}
+	dbg_hid("%s: hid_hw_raw_request(..., 0x81, ...) returned %d\n", __func__, ret);
+
+	/*
+	 * Some variants do not implement feature report 0x81 at all.
+	 * Fortunately, feature report 0x12 also contains the MAC address of
+	 * a controller.
+	 */
+	ret = hid_hw_raw_request(sc->hdev, 0x12, buf,
+			DS4_FEATURE_REPORT_0x12_SIZE, HID_FEATURE_REPORT,
+			HID_REQ_GET_REPORT);
+	if (ret == DS4_FEATURE_REPORT_0x12_SIZE) {
+		memcpy(sc->mac_address, &buf[1], sizeof(sc->mac_address));
+		goto out_free;
+	}
+	dbg_hid("%s: hid_hw_raw_request(..., 0x12, ...) returned %d\n", __func__, ret);
+
+	hid_err(sc->hdev, "failed to retrieve feature reports 0x81 and 0x12 with the DualShock 4 MAC address\n");
+	ret = ret < 0 ? ret : -EINVAL;
+
+out_free:
+
+	kfree(buf);
+
+	return ret;
+}
+
+
 static int sony_check_add(struct sony_sc *sc)
 {
 	u8 *buf = NULL;
@@ -2398,26 +2448,9 @@ static int sony_check_add(struct sony_sc *sc)
 			return 0;
 		}
 	} else if (sc->quirks & (DUALSHOCK4_CONTROLLER_USB | DUALSHOCK4_DONGLE)) {
-		buf = kmalloc(DS4_FEATURE_REPORT_0x81_SIZE, GFP_KERNEL);
-		if (!buf)
-			return -ENOMEM;
-
-		/*
-		 * The MAC address of a DS4 controller connected via USB can be
-		 * retrieved with feature report 0x81. The address begins at
-		 * offset 1.
-		 */
-		ret = hid_hw_raw_request(sc->hdev, 0x81, buf,
-				DS4_FEATURE_REPORT_0x81_SIZE, HID_FEATURE_REPORT,
-				HID_REQ_GET_REPORT);
-
-		if (ret != DS4_FEATURE_REPORT_0x81_SIZE) {
-			hid_err(sc->hdev, "failed to retrieve feature report 0x81 with the DualShock 4 MAC address\n");
-			ret = ret < 0 ? ret : -EINVAL;
-			goto out_free;
-		}
-
-		memcpy(sc->mac_address, &buf[1], sizeof(sc->mac_address));
+		ret = sony_get_usb_ds4_devaddr(sc);
+		if (ret < 0)
+			return ret;
 
 		snprintf(sc->hdev->uniq, sizeof(sc->hdev->uniq),
 			"%02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx",
@@ -2460,7 +2493,7 @@ static int sony_check_add(struct sony_sc *sc)
 	} else {
 		return 0;
 	}
-
+	dbg_hid("%s: retrieved MAC address: %s\n", __func__, sc->hdev->uniq);
 	ret = sony_check_add_dev_list(sc);
 
 out_free:
@@ -2590,6 +2623,7 @@ static int sony_input_configured(struct hid_device *hdev,
 			hid_err(hdev, "Failed to set controller into operational mode\n");
 			goto err_stop;
 		}
+
 
 		sony_init_output_report(sc, sixaxis_send_output_report);
 	} else if (sc->quirks & SIXAXIS_CONTROLLER_USB) {
