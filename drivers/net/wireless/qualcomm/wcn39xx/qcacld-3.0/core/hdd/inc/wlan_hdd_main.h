@@ -96,6 +96,9 @@
 #include "wlan_hdd_oemdata.h"
 #endif
 #include "wlan_hdd_he.h"
+#ifdef FEATURE_FRAME_INJECTION_SUPPORT
+#include "wlan_hdd_frame_inject.h"
+#endif
 
 #include <net/neighbour.h>
 #include <net/netevent.h>
@@ -1386,6 +1389,9 @@ struct hdd_adapter {
 	qdf_work_t netdev_features_update_work;
 	uint8_t gro_disallowed[DP_MAX_RX_THREADS];
 	uint8_t gro_flushed[DP_MAX_RX_THREADS];
+	#ifdef FEATURE_FRAME_INJECTION_SUPPORT
+		struct hdd_injection_ctx *injection_ctx;
+	#endif
 };
 
 #define WLAN_HDD_GET_STATION_CTX_PTR(adapter) (&(adapter)->session.station)
@@ -1469,6 +1475,10 @@ enum smps_mode {
 /**
  * struct hdd_offloaded_packets - request id to pattern id mapping
  * @request_id: request id
+
+#ifdef FEATURE_FRAME_INJECTION_SUPPORT
+	struct hdd_injection_ctx *injection_ctx;
+#endif
  * @pattern_id: pattern id
  *
  */
