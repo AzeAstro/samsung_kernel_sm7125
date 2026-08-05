@@ -4341,7 +4341,41 @@ enum qca_wlan_vendor_attr_config {
 	 * Set the value to 0 ( corresponding to BE ) if the QOS upgrade needs
 	 * to disable.
 	 */
-	QCA_WLAN_VENDOR_ATTR_CONFIG_UDP_QOS_UPGRADE = 72,
+QCA_WLAN_VENDOR_ATTR_CONFIG_UDP_QOS_UPGRADE = 72,
+
+	/* 16-bit unsigned value. For probing RSSI on other antennas, this
+	 * attribute specifies the number of WLAN probes.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_PROBE_COUNT_WLAN = 124,
+
+	/* 16-bit unsigned value. For probing RSSI on other antennas, this
+	 * attribute specifies the number of BT probes.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_PROBE_COUNT_BT = 125,
+
+	/* 16-bit unsigned value. This attribute specifies the WLAN RSSI
+	 * threshold. The firmware will start to probe RSSI on other antenna
+	 * if WLAN RSSI is lower than the threshold.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_PROBE_WLAN_RSSI_THRESHOLD = 126,
+
+	/* 16-bit unsigned value. This attribute specifies the BT RSSI
+	 * threshold. The firmware will start to probe RSSI on other antenna
+	 * if BT RSSI is lower than the threshold.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_PROBE_BT_RSSI_THRESHOLD = 127,
+
+	/* 16-bit unsigned value. This attribute specifies the WLAN RSSI
+	 * difference. The firmware will select a better antenna if WLAN RSSI
+	 * difference is larger than the value.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_SWITCH_WLAN_RSSI_DIFF = 128,
+
+	/* 16-bit unsigned value. This attribute specifies the BT RSSI
+	 * difference. The firmware will select a better antenna if WLAN RSSI
+	 * difference larger than the value.
+	 */
+	QCA_WLAN_VENDOR_ATTR_CONFIG_ANT_DIV_SWITCH_BT_RSSI_DIFF = 129,
 
 	/* keep last */
 	QCA_WLAN_VENDOR_ATTR_CONFIG_AFTER_LAST,
@@ -4413,6 +4447,9 @@ enum qca_wlan_vendor_attr_data_offload_ind {
 	QCA_WLAN_VENDOR_ATTR_DATA_OFFLOAD_IND_PROTOCOL,
 	QCA_WLAN_VENDOR_ATTR_DATA_OFFLOAD_IND_EVENT,
 
+	/* 16-bit unsigned value. For probing RSSI on other antennas, this
+	 * attribute specifies the number of WLAN probes.
+	 */
 	/* keep last */
 	QCA_WLAN_VENDOR_ATTR_DATA_OFFLOAD_IND_AFTER_LAST,
 	QCA_WLAN_VENDOR_ATTR_DATA_OFFLOAD_IND_MAX =
