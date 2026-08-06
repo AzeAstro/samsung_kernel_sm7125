@@ -4,14 +4,14 @@ export ARCH=arm64
 mkdir out
 export out=out
 
-BUILD_CROSS_COMPILE=/home/atlas_co/kernel/OneUI6/toolchain/gcc/bin/aarch64-linux-android-
-KERNEL_LLVM_BIN=/home/atlas_co/kernel/OneUI6/toolchain/clang/bin/clang
+BUILD_CROSS_COMPILE=/home/atlas_c0/Documents/GitHub/KernelCompilers/a52q/OneUI6/gcc/bin/aarch64-linux-android-
+KERNEL_LLVM_BIN=/home/atlas_c0/Documents/GitHub/KernelCompilers/a52q/OneUI6/clang/bin/clang
 CLANG_TRIPLE=aarch64-linux-gnu-
-KERNEL_MAKE_ENV="DTC_EXT=/home/atlas_co/kernel/OneUI6/toolchain/dtc CONFIG_BUILD_ARM64_DT_OVERLAY=y"
+KERNEL_MAKE_ENV="DTC_EXT=/home/atlas_c0/Documents/GitHub/KernelCompilers/a52q/OneUI6/dtc CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
 make -j8 -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE a52q_nethutnerV2_defconfig
 make -j8 -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE
- 
+
 
 files=$(find out -type f -name "*.ko")
 
